@@ -8,6 +8,7 @@ room = {
     'outside':  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons", [
                          Item('sword', 'a steel sword'),
+                         Item('rusty sword', 'a rusty sword'),
                          Item('axe', 'a steel axe')
                      ]),
 
@@ -93,13 +94,13 @@ while selection != "q":
             player.get_items()
     elif selection_split[0] == "take":
         try:
-            item = [item for item in curr_room.items if item.name == selection_split[1]][0]
+            item = [item for item in curr_room.items if item.name == " ".join(selection_split[1:])][0]
             player.pick_up_item(curr_room, item)
         except:
             print("Item not found in room")
     elif selection_split[0] == "drop":
         try:
-            item = [item for item in player.items if item.name == selection_split[1]][0]
+            item = [item for item in player.items if item.name == " ".join(selection_split[1:])][0]
             player.drop_item(curr_room, item)
         except:
             print("Item not found in bag")
