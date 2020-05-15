@@ -13,11 +13,13 @@ Current Room: {self.current_room.name}"""
     def pick_up_item(self, room, item):
         self.items.append(item)
         room.remove_item(item)
+        print(f"{item.name} picked up.")
         return self.items
     
     def drop_item(self, room, item):
         self.items.remove(item)
         room.add_item(item)
+        print(f"{item.name} dropped.")
         return self.items
 
     def get_items(self):
