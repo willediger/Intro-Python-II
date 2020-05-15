@@ -73,10 +73,11 @@ print(player.name)
 selection = ""
 while selection != "q":
     curr_room = player.current_room
-    print(curr_room.name)
-    print(curr_room.description)
+    print(f"Current Room: {curr_room.name}")
+    print(f"{curr_room.description}")
 
-    selection = input("Select a direction to move: ")
+    selection = input("Select an action to perform or a direction to move, or \"help\" for a list of commands: ")
+    selection_split = selection.split(' ')
     if selection == "n" and curr_room.n_to is not None:
         player.current_room = curr_room.n_to
     elif selection == "s" and curr_room.s_to is not None:
@@ -85,6 +86,30 @@ while selection != "q":
         player.current_room = curr_room.e_to
     elif selection == "w" and curr_room.w_to is not None:
         player.current_room = curr_room.w_to
+    elif selection_split[0] == "list" and selection_split[1] == "items" and selection_split[2] == "in":
+        if selection_split[3] == "room":
+            curr_room.get_items()
+        elif selection_split[3] == "bag":
+            player.get_items()
+    elif selection_split[0] == "take":
+        try:
+            item = [item for item in curr_room.items if item.name == selection_split[1]][0]
+            player.pick_up_item(curr_room, item)
+        except:
+            print("Item not found in room")
+    elif selection_split[0] == "drop":
+        try:
+            item = [item for item in player.items if item.name == selection_split[1]][0]
+            player.drop_item(curr_room, item)
+        except:
+            print("Item not found in bag")
+    elif selection_split[0] == "help":
+        print("""You can move in a cardinal direction, eg \"n\", \"s\", \"e\", \"w\".
+You can \"list items in bag\".
+You can \"list items in room\".
+You can \"take item ___\".
+You can \"drop item ___\".
+"q" to quit.""")
     elif selection != "q":
         print("That movement is not possible.")
 
